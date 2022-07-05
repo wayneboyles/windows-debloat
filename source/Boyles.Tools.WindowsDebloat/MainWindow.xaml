@@ -1,0 +1,116 @@
+﻿<AdonisControls:AdonisWindow x:Class="Boyles.Tools.WindowsDebloat.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Boyles.Tools.WindowsDebloat"
+        xmlns:AdonisUi="clr-namespace:AdonisUI;assembly=AdonisUI"
+        xmlns:AdonisControls="clr-namespace:AdonisUI.Controls;assembly=AdonisUI"
+        xmlns:AdonisExtensions="clr-namespace:AdonisUI.Extensions;assembly=AdonisUI"
+        xmlns:converters="clr-namespace:Boyles.Tools.WindowsDebloat.Converters"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        PlaceTitleBarOverContent="{Binding IsTitleBarVisible, Converter={x:Static converters:BoolToInverseBoolConverter.Instance}}"
+        Title="Windows Debloat" Height="450" Width="800">
+
+    <AdonisControls:AdonisWindow.Style>
+        <Style TargetType="AdonisControls:AdonisWindow" BasedOn="{StaticResource {x:Type AdonisControls:AdonisWindow}}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsTitleBarVisible}" Value="False">
+                    <Setter Property="IconVisibility" Value="Collapsed"/>
+                    <Setter Property="TitleVisibility" Value="Collapsed"/>
+                    <Setter Property="TitleBarContent">
+                        <Setter.Value>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" Margin="{AdonisUi:Space 2}">
+                                    <ContentControl UseLayoutRounding="True" Height="20" Focusable="False">
+                                        <ContentControl.Style>
+                                            <Style TargetType="ContentControl">
+                                                <Setter Property="ContentTemplate" Value="{DynamicResource {x:Static AdonisUi:Icons.AdonisUIFull}}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDark, RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}" Value="True">
+                                                        <Setter Property="ContentTemplate" Value="{DynamicResource {x:Static AdonisUi:Icons.AdonisUIDarkFull}}"/>
+                                                        <Setter Property="Foreground" Value="White"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ContentControl.Style>
+                                    </ContentControl>
+                                </StackPanel>
+                            </Grid>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </AdonisControls:AdonisWindow.Style>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="NavigationGroupHeaderStyle" TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static AdonisUi:Brushes.ForegroundBrush}}"/>
+                <Setter Property="FontWeight" Value="DemiBold"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Margin" Value="{AdonisUi:Space 2, 1, 1, 1}"/>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+        
+    <Grid>
+        <DockPanel LastChildFill="True" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <!-- Navigation -->
+                <Grid Grid.Column="0">
+                    <GroupBox MinWidth="{AdonisUi:Space 25}" Padding="{AdonisUi:Space 0, 1, 0, 0}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="{Binding TitleBarActualHeight, RelativeSource={RelativeSource AncestorType={x:Type AdonisControls:AdonisWindow}}}" />
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Color Scheme -->
+                            <Grid Grid.Row="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="{AdonisUi:Space 2}"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="COLOR SCHEME" Style="{StaticResource NavigationGroupHeaderStyle}" />
+
+                                <Grid Grid.Row="1" Margin="{AdonisUi:Space 4, 0, 3, 0}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Light" VerticalAlignment="Center" Margin="{AdonisUi:Space 0, 0, 1, 0}"/>
+                                        <ToggleButton Style="{DynamicResource {x:Static AdonisUi:Styles.ToggleSwitch}}"
+                                                      IsChecked="{Binding IsDark, RelativeSource={RelativeSource FindAncestor, AncestorType=local:MainWindow}}"
+                                                      Content="Dark"/>
+
+                                    </StackPanel>
+
+                                </Grid>
+                            </Grid>
+                            
+                            <!-- Menu -->
+                            <ListBox Grid.Row="1"
+                                     AdonisExtensions:ScrollViewerExtension.VerticalScrollBarPlacement="Overlay"
+                                     AdonisExtensions:ScrollViewerExtension.HideScrollBarsUntilMouseOver="True">
+                                
+                            </ListBox>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+                
+                <!-- Content -->
+                <Grid Grid.Column="1">
+                    
+                </Grid>
+            </Grid>
+        </DockPanel>
+    </Grid>
+</AdonisControls:AdonisWindow>
